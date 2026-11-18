@@ -1,9 +1,3 @@
-"""
-本文件将使用官方的数据集划分进行训练
-
-在使用官方的训练数据集的时候需要注意，txt文件的每行内容都带有后缀
-"""
-
 import os
 import random
 import xml.etree.ElementTree as ET
@@ -31,10 +25,6 @@ nums = np.zeros(len(classes))
 
 
 def convert_annotation(image_name, txt_name):
-    """
-    本函数将根据图像名称读取对应的xml文件，然后对其进行转换，并将转换结果存储在txt文件中
-    注意这里的image_name其实是带图像后缀的（在读取xml文件的时候是没有影响的，但是在读取图像的时候需要注意）
-    """
     in_file = open(os.path.join(VOCdevkit_path, f'Annotations/{image_name}.xml'), encoding='utf-8')
 
     tree = ET.parse(in_file)

@@ -1,8 +1,3 @@
-"""
-本代码只修改 classes_path 和 VOCdevkit_path 参数（还有一些路径代码，但评价参数没改动）其他别动
-如果使用的是官方个的数据集，那么需要注意的是 txt 每一行数据都带有图像后缀
-"""
-
 import os
 import xml.etree.ElementTree as ET
 

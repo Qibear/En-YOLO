@@ -1,23 +1,9 @@
-
-
-
-
-"""
-必须包含的三个尺寸
-torch.Size([4, 128, 80, 80])
-torch.Size([4, 256, 40, 40])
-torch.Size([4, 512, 20, 20])
-"""
 import torch.nn as nn
 from torchinfo import summary
 from nets.decoder_parts import Up, Down, OutConv, DoubleConv
 
 
 class DecoderNet(nn.Module):
-    """
-    1、对输入的图像进行增强处理
-    2、融合backbone输出的特征
-    """
 
     def __init__(self):
         super().__init__()

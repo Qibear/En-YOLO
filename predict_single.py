@@ -1,11 +1,3 @@
-
-
-
-
-"""
-读取测试集txt，然后对图像进行检测，并保存检测结果
-"""
-
 import os
 from PIL import Image
 from yolo import YOLO

@@ -1,12 +1,9 @@
-""" Parts of the U-Net model """
-
 import torch
 import torch.nn as nn
 import torch.nn.functional as F
 
 
 class DoubleConv(nn.Module):
-    """(convolution => [BN] => ReLU) * 2"""
 
     def __init__(self, in_channels, out_channels, mid_channels=None):
         super().__init__()
@@ -41,7 +38,6 @@ class SingleConv(nn.Module):
 
 
 class Down(nn.Module):
-    """这里将下次进行改了，原来使用的 double_conv ，现在使用的是 single_conv """
 
     def __init__(self, in_channels, out_channels):
         super().__init__()
@@ -55,7 +51,6 @@ class Down(nn.Module):
 
 
 class Up(nn.Module):
-    """Upscaling then double conv"""
 
     def __init__(self, in_channels, out_channels, bilinear=True):
         super().__init__()

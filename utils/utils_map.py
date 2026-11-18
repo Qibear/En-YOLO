@@ -10,35 +10,9 @@ import cv2
 import matplotlib.pyplot as plt
 import numpy as np
 
-'''
-    0,0 ------> x (width)
-     |
-     |  (Left,Top)
-     |      *_________
-     |      |         |
-            |         |
-     y      |_________|
-  (height)            *
-                (Right,Bottom)
-'''
 
 
 def log_average_miss_rate(precision, fp_cumsum, num_images):
-    """
-        log-average miss rate:
-            Calculated by averaging miss rates at 9 evenly spaced FPPI points
-            between 10e-2 and 10e0, in log-space.
-
-        output:
-                lamr | log-average miss rate
-                mr | miss rate
-                fppi | false positives per image
-
-        references:
-            [1] Dollar, Piotr, et al. "Pedestrian Detection: An Evaluation of the
-               State of the Art." Pattern Analysis and Machine Intelligence, IEEE
-               Transactions on 34.4 (2012): 743 - 761.
-    """
 
     if precision.size == 0:
         lamr = 0
@@ -62,9 +36,6 @@ def log_average_miss_rate(precision, fp_cumsum, num_images):
     return lamr, mr, fppi
 
 
-"""
- throw error and exit
-"""
 
 
 def error(msg):
@@ -72,9 +43,6 @@ def error(msg):
     sys.exit(0)
 
 
-"""
- check if the number is a float between 0.0 and 1.0
-"""
 
 
 def is_float_between_0_and_1(value):
@@ -88,61 +56,27 @@ def is_float_between_0_and_1(value):
         return False
 
 
-"""
- Calculate the AP given the recall and precision array
-    1st) We compute a version of the measured precision/recall curve with
-         precision monotonically decreasing
-    2nd) We compute the AP as the area under this curve by numerical integration.
-"""
 
 
 def voc_ap(rec, prec):
-    """
-    --- Official matlab code VOC2012---
-    mrec=[0 ; rec ; 1];
-    mpre=[0 ; prec ; 0];
-    for i=numel(mpre)-1:-1:1
-            mpre(i)=max(mpre(i),mpre(i+1));
-    end
-    i=find(mrec(2:end)~=mrec(1:end-1))+1;
-    ap=sum((mrec(i)-mrec(i-1)).*mpre(i));
-    """
     rec.insert(0, 0.0)
     rec.append(1.0)
     mrec = rec[:]
     prec.insert(0, 0.0)
     prec.append(0.0)
     mpre = prec[:]
-    """
-     This part makes the precision monotonically decreasing
-        (goes from the end to the beginning)
-        matlab: for i=numel(mpre)-1:-1:1
-                    mpre(i)=max(mpre(i),mpre(i+1));
-    """
     for i in range(len(mpre) - 2, -1, -1):
         mpre[i] = max(mpre[i], mpre[i + 1])
-    """
-     This part creates a xml_list of indexes where the recall changes
-        matlab: i=find(mrec(2:end)~=mrec(1:end-1))+1;
-    """
     i_list = []
     for i in range(1, len(mrec)):
         if mrec[i] != mrec[i - 1]:
             i_list.append(i)
-    """
-     The Average Precision (AP) is the area under the curve
-        (numerical integration)
-        matlab: ap=sum((mrec(i)-mrec(i-1)).*mpre(i));
-    """
     ap = 0.0
     for i in i_list:
         ap += ((mrec[i] - mrec[i - 1]) * mpre[i])
     return ap, mrec, mpre
 
 
-"""
- Convert the lines of a file to a xml_list
-"""
 
 
 def file_lines_to_list(path):
@@ -154,9 +88,6 @@ def file_lines_to_list(path):
     return content
 
 
-"""
- Draws text in image
-"""
 
 
 def draw_text_in_image(img, text, pos, color, line_width):
@@ -174,9 +105,6 @@ def draw_text_in_image(img, text, pos, color, line_width):
     return img, (line_width + text_width)
 
 
-"""
- Plot - adjust axes
-"""
 
 
 def adjust_axes(r, t, fig, axes):
@@ -192,9 +120,6 @@ def adjust_axes(r, t, fig, axes):
     axes.set_xlim([x_lim[0], x_lim[1] * propotion])
 
 
-"""
- Draw plot using Matplotlib
-"""
 
 
 def draw_plot_func(dictionary, n_classes, window_title, plot_title, x_label, output_path, to_show, plot_color,
@@ -205,12 +130,6 @@ def draw_plot_func(dictionary, n_classes, window_title, plot_title, x_label, out
     sorted_keys, sorted_values = zip(*sorted_dic_by_value)
 
     if true_p_bar != "":
-        """
-         Special case to draw in:
-            - green -> TP: True Positives (object detected and matches ground-truth)
-            - red -> FP: False Positives (object detected but does not match ground-truth)
-            - orange -> FN: False Negatives (object not detected but present in the ground-truth)
-        """
         fp_sorted = []
         tp_sorted = []
         for key in sorted_keys:
@@ -221,9 +140,6 @@ def draw_plot_func(dictionary, n_classes, window_title, plot_title, x_label, out
                  left=fp_sorted)
 
         plt.legend(loc='lower right')
-        """
-         Write number on side of bar
-        """
         fig = plt.gcf()
         axes = plt.gca()
         r = fig.canvas.get_renderer()
@@ -240,9 +156,6 @@ def draw_plot_func(dictionary, n_classes, window_title, plot_title, x_label, out
                 adjust_axes(r, t, fig, axes)
     else:
         plt.barh(range(n_classes), sorted_values, color=plot_color)
-        """
-         Write number on side of bar
-        """
         fig = plt.gcf()
         axes = plt.gca()
         r = fig.canvas.get_renderer()
@@ -259,9 +172,6 @@ def draw_plot_func(dictionary, n_classes, window_title, plot_title, x_label, out
 
     tick_font_size = 12
     plt.yticks(range(n_classes), sorted_keys, fontsize=tick_font_size)
-    """
-     Re-scale height accordingly
-    """
     init_height = fig.get_figheight()
 
     dpi = fig.dpi
@@ -515,9 +425,6 @@ def get_map(MINOVERLAP, draw_plot, path='./map_out'):
                     if ovmax > 0:
                         status = "INSUFFICIENT OVERLAP"
 
-                """
-                Draw image to show animation
-                """
                 if show_animation:
                     height, widht = img.shape[:2]
                     white = (255, 255, 255)
@@ -680,9 +587,6 @@ def get_map(MINOVERLAP, draw_plot, path='./map_out'):
 
     shutil.rmtree(TEMP_FILES_PATH)
 
-    """
-    Count total of detection-results
-    """
     det_counter_per_class = {}
     for txt_file in dr_files_list:
         lines_list = file_lines_to_list(txt_file)
@@ -694,24 +598,15 @@ def get_map(MINOVERLAP, draw_plot, path='./map_out'):
                 det_counter_per_class[class_name] = 1
     dr_classes = list(det_counter_per_class.keys())
 
-    """
-    Write number of ground-truth objects per class to results.txt
-    """
     with open(RESULTS_FILES_PATH + "/results.txt", 'a') as results_file:
         results_file.write("\n# Number of ground-truth objects per class\n")
         for class_name in sorted(gt_counter_per_class):
             results_file.write(class_name + ": " + str(gt_counter_per_class[class_name]) + "\n")
 
-    """
-    Finish counting true positives
-    """
     for class_name in dr_classes:
         if class_name not in gt_classes:
             count_true_positives[class_name] = 0
 
-    """
-    Write number of detected objects per class to results.txt
-    """
     with open(RESULTS_FILES_PATH + "/results.txt", 'a') as results_file:
         results_file.write("\n# Number of detected objects per class\n")
         for class_name in sorted(dr_classes):
@@ -721,9 +616,6 @@ def get_map(MINOVERLAP, draw_plot, path='./map_out'):
             text += ", fp:" + str(n_det - count_true_positives[class_name]) + ")\n"
             results_file.write(text)
 
-    """
-    Plot the total number of occurences of each class in the ground-truth
-    """
     if draw_plot:
         window_title = "ground-truth-info"
         plot_title = "ground-truth\n"
@@ -772,9 +664,6 @@ def get_map(MINOVERLAP, draw_plot, path='./map_out'):
 
 
 
-    """
-    Draw log-average miss rate plot (Show lamr of all classes in decreasing order)
-    """
     if draw_plot:
         window_title = "lamr"
         plot_title = "log-average miss rate"
@@ -794,9 +683,6 @@ def get_map(MINOVERLAP, draw_plot, path='./map_out'):
             ""
         )
 
-    """
-    Draw mAP plot (Show AP's of all classes in decreasing order)
-    """
     if draw_plot:
         window_title = "mAP"
         plot_title = "mAP = {0:.2f}%".format(mAP * 100)

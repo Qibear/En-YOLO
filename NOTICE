@@ -1,0 +1,9 @@
+Third-party notices for En-YOLO
+
+nets/evc_blocks.py contains material attributed to Megvii Inc.
+
+Copyright (c) 2014-2021 Megvii Inc. All rights reserved.
+
+See LICENSE-YOLOX for the applicable Apache License, Version 2.0.
+The En-YOLO release modifies this file by removing comments and docstrings.
+The EVC module also credits the paper "Centralized Feature Pyramid for Object Detection".

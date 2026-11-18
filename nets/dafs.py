@@ -1,13 +1,3 @@
-
-
-
-
-"""
-模块的来源：
-An Interactively Reinforced Paradigm for Joint Infrared-Visible Image Fusion and Saliency Object Detection
-
-对模块也进行了改进：将原来的 channel-attention 换成了 eca-attention
-"""
 import torch
 import torch.nn as nn
 from torch.nn import init

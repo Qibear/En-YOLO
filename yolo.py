@@ -12,9 +12,6 @@ from utils.utils import (cvtColor, get_classes, preprocess_input, resize_image,
                          show_config)
 from utils.utils_bbox import decode_outputs, non_max_suppression
 
-'''
-在测试自己训练的模型在测试集上的表现时，需要修改 "model_path" 和 "classes_path" 两个参数
-'''
 
 
 

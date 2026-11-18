@@ -1,14 +1,3 @@
-
-
-
-
-"""
-改进
-    1、添加了重建模型，重建模型将使用图像和backbone的三个特征进行重建
-    2、添加DAFS模块，该模块将用于连接backbone和neck结构（DAFS的代码添加在 darknet 网络中）
-    3、在neck的两个卷积之间，添加了1个 evc 模块
-"""
-
 import torch
 import torch.nn as nn
 from nets.darknet import BaseConv, CSPDarknet, CSPLayer, DWConv
@@ -81,10 +70,6 @@ class YOLOPAFPN(nn.Module):
         self.tanh = nn.Tanh()
 
     def forward(self, input):
-        """
-        在训练前对其进行了拼接的
-        在dim=0维度进行拼接，是不会造成维度变化的，按batch进行分割
-        """
         if self.training:
             input, clear_x = input.split((4, 4), dim=0)
 

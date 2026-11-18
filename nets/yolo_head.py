@@ -1,11 +1,3 @@
-
-
-
-
-"""
-head部分是没有做任何改进的
-"""
-
 import torch
 import torch.nn as nn
 from nets.darknet import BaseConv, DWConv

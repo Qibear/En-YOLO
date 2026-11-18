@@ -85,7 +85,6 @@ class YoloDataset(Dataset):
             new_image.paste(image, (dx, dy))
             image_data = np.array(new_image, np.float32)
 
-            '''clear'''
             clearimg = clearimg.resize((nw, nh), Image.BICUBIC)
             new_clearimg = Image.new('RGB', (w, h), (128, 128, 128))
             new_clearimg.paste(clearimg, (dx, dy))
@@ -121,7 +120,6 @@ class YoloDataset(Dataset):
         new_image.paste(image, (dx, dy))
         image = new_image
 
-        '''clear'''
         new_clearimg = Image.new('RGB', (w, h), (128, 128, 128))
         new_clearimg.paste(clearimg, (dx, dy))
         clearimg = new_clearimg

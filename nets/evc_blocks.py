@@ -1,15 +1,3 @@
-
-
-
-
-"""
-参考来源：Centralized Feature Pyramid for Object Detection
-主要模块：EVC-moudle ——> LightMLPBlock+LVC
-
-Copyright (c) 2014-2021 Megvii Inc. All rights reserved.
-Modified for the En-YOLO source release by removing Python comments.
-"""
-
 import torch
 import torch.nn as nn
 from torch.nn import functional as F
@@ -30,7 +18,6 @@ def get_activation(name="silu", inplace=True):
 
 
 class BaseConv(nn.Module):
-    """A Conv2d -> Batchnorm -> silu/leaky relu block"""
 
     def __init__(
             self, in_channels, out_channels, ksize, stride, groups=1, bias=False, act="silu"
@@ -58,7 +45,6 @@ class BaseConv(nn.Module):
 
 
 class DWConv(nn.Module):
-    """Depthwise Conv + Conv"""
 
     def __init__(self, in_channels, out_channels, ksize, stride=1, act="silu"):
         super().__init__()

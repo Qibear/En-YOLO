@@ -153,9 +153,6 @@ class Mean(nn.Module):
 
 
 class Mlp(nn.Module):
-    """
-    Implementation of MLP with 1*1 convolutions. Input: tensor with shape [B, C, H, W]
-    """
 
     def __init__(self, in_features, hidden_features=None,
                  out_features=None, act_layer=nn.GELU, drop=0.):
@@ -184,10 +181,6 @@ class Mlp(nn.Module):
 
 
 class GroupNorm(nn.GroupNorm):
-    """
-    Group Normalization with 1 group.
-    Input: tensor in shape [B, C, H, W]
-    """
 
     def __init__(self, num_channels, **kwargs):
         super().__init__(1, num_channels, **kwargs)
